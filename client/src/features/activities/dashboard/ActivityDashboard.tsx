@@ -11,7 +11,7 @@ const ActivityDashboard = () => {
   const { loadActivities, activityRegistry } = activityStore;
   useEffect(() => {
     if (activityRegistry.size === 0) loadActivities();
-  }, [loadActivities]);
+  }, [loadActivities, activityRegistry.size]);
 
   if (activityStore.loadingInitial)
     return <LoadingComponent content="loading app" />;
