@@ -1,19 +1,25 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState, useEffect } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
-
+import { v4 as uuid } from "uuid";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 function ActivityForm() {
   const { activityStore } = useStore();
   const {
     selectedActivity,
-    closeForm,
+    loadActivity,
     createActivity,
     updateActivity,
     loading,
+    loadingInitial,
   } = activityStore;
-  const initialState = selectedActivity ?? {
+
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [activity, setActivity] = useState({
     id: "",
     title: "",
     category: "",
@@ -21,10 +27,22 @@ function ActivityForm() {
     date: "",
     city: "",
     venue: "",
-  };
-  const [activity, setActivity] = useState(initialState);
+  });
+  useEffect(() => {
+    if (id) loadActivity(id).then((activity) => setActivity(activity!));
+  }, [id, loadActivity]);
+
   const handelSubmit = () => {
-    activity.id ? updateActivity(activity) : createActivity(activity);
+    if (!activity.id) {
+      activity.id = uuid();
+      createActivity(activity).then(() =>
+        navigate(`/activities/${activity.id}`)
+      );
+    } else {
+      updateActivity(activity).then(() =>
+        navigate(`/activities/${activity.id}`)
+      );
+    }
   };
   const handelInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -32,6 +50,7 @@ function ActivityForm() {
     const { name, value } = event.target;
     setActivity({ ...activity, [name]: value });
   };
+  if (loadingInitial) return <LoadingComponent content="Loading activity" />;
   return (
     <Segment clearing>
       <Form onSubmit={handelSubmit} autoComplete="off">
@@ -81,7 +100,8 @@ function ActivityForm() {
           onChange={handelInputChange}
         />
         <Button
-          onClick={closeForm}
+          as={Link}
+          to="/activities"
           floated="right"
           type="button"
           content="Cancel"
