@@ -1,19 +1,22 @@
 import React from "react";
 import { Button, Card, Image } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
-interface Props {
-  activity: Activity;
-  cancelSelectActivity: () => void;
-  openForm: (id: string) => void;
-}
-function ActivityDetails({ activity, cancelSelectActivity, openForm }: Props) {
+import { useStore } from "../../../app/stores/store";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { observer } from "mobx-react-lite";
+function ActivityDetails() {
+  const { activityStore } = useStore();
+  const {
+    selectedActivity: activity,
+    openForm,
+    cancelSelectActivity,
+  } = activityStore;
+  if (!activity) return <LoadingComponent />;
   return (
     <Card fluid>
       <Image src={`/assets/categoryImages/${activity.category}.jpg`} />
       <Card.Content>
         <Card.Header>{activity.title}</Card.Header>
         <Card.Meta>
-          {" "}
           <span>{activity.date}</span>
         </Card.Meta>
         <Card.Description>{activity.description}</Card.Description>
@@ -38,4 +41,4 @@ function ActivityDetails({ activity, cancelSelectActivity, openForm }: Props) {
   );
 }
 
-export default ActivityDetails;
+export default observer(ActivityDetails);
