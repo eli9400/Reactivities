@@ -5,11 +5,9 @@ import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
-
 function ActivityForm() {
   const { activityStore } = useStore();
   const {
-    selectedActivity,
     loadActivity,
     createActivity,
     updateActivity,

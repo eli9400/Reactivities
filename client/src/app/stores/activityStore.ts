@@ -7,7 +7,7 @@ export default class ActivityStore {
   selectedActivity: Activity | undefined = undefined;
   editMode = false;
   loading = false;
-  loadingInitial = false;
+  loadingInitial = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -19,13 +19,24 @@ export default class ActivityStore {
     );
   }
 
+  get groupedActivities() {
+    return Object.entries(
+      this.activitiesByDate.reduce((activities, activity) => {
+        const date = activity.date;
+        activities[date] = activities[date]
+          ? [...activities[date], activity]
+          : [activity];
+        return activities;
+      }, {} as { [key: string]: Activity[] })
+    );
+  }
+
   loadActivities = async () => {
     this.setLoadingInitial(true);
     try {
       const activities = await agent.Activities.list();
       activities.forEach((activity) => {
         this.setActivity(activity);
-        return activities;
       });
       this.setLoadingInitial(false);
     } catch (error) {
