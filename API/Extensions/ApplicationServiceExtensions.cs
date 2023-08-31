@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Application.Core;
 using MediatR;
 using Application.Activities;
-
+using FluentValidation;
+using FluentValidation.AspNetCore;
 namespace API.Extensions
 {
     public static class ApplicationServiceExtensions
@@ -26,6 +27,8 @@ opt.AddPolicy("CorsPolicy",policy=>
 });
 services.AddMediatR(typeof(List.Handler));
 services.AddAutoMapper(typeof(MappingProfiles).Assembly); 
+services.AddFluentValidationAutoValidation();
+services.AddValidatorsFromAssemblyContaining<Create>();
 
 return services;
         }
