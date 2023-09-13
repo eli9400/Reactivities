@@ -7,7 +7,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import MyTextInput from "../../../app/common/form/MyTextInput";
+import MyTextInput from "./MyTextInput";
 import MyTextArea from "./MyTextArea";
 import MySelectInput from "./MySelectInput";
 import { categoryOptions } from "../../../app/common/options/categoryOptions";
