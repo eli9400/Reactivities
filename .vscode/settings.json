@@ -1,3 +1,10 @@
 {
-  "cSpell.words": ["datepicker", "dbcontext", "Formik", "Hmac", "Toastify"]
+  "cSpell.words": [
+    "Cloudinary",
+    "datepicker",
+    "dbcontext",
+    "Formik",
+    "Hmac",
+    "Toastify"
+  ]
 }

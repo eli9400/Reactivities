@@ -9,6 +9,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Application.interfaces;
 using Infrastructure.Security;
+using Infrastructure.Photos;
 namespace API.Extensions
 {
     public static class ApplicationServiceExtensions
@@ -35,7 +36,8 @@ services.AddFluentValidationAutoValidation();
 services.AddValidatorsFromAssemblyContaining<Create>();
 services.AddHttpContextAccessor();
 services.AddScoped<IUserAccessor,UserAccessor>();
-
+services.AddScoped<IPhotoAccessor,PhotoAccessor>();
+services.Configure<CloudierySettings>(config.GetSection("Cloudinary"));
 return services;
         }
     }
